@@ -1,0 +1,47 @@
+# RAG Systems - Global Configuration
+# This file is shared across all notebooks to avoid duplication
+
+# LLM Settings
+llm_provider: "groq"  # Options: openai | openrouter | groq | gemini | ollama | hf_local
+
+# OpenRouter-specific settings (only used when llm_provider = "openrouter")
+# openrouter_provider: "openai"  # Options: openai | google | anthropic | meta | mistral | cohere
+# openrouter_model: "gpt-4o-mini"  # Model name without provider prefix
+
+# Direct provider settings (used when llm_provider != "openrouter")
+llm_model: "llama-3.1-8b-instant"  # Model name for direct providers
+
+temperature: 0.2  # Lower for factual RAG, higher (0.7) for conversational
+max_tokens: 384
+request_timeout: 60  # seconds
+
+# Embedding Settings
+text_emb_provider: "sbert"  # Options: openai | cohere | sbert
+text_emb_model: "sentence-transformers/all-MiniLM-L6-v2"  # Or: BAAI/bge-small-en-v1.5
+normalize_embeddings: true
+
+# Image Embedding Settings (for multimodal RAG)
+image_emb_model: "openai/clip-vit-base-patch32"
+clip_model: "clip-ViT-B-32"  # CLIP model for multimodal embeddings
+text_in_clip_space: false  # If true, use CLIP text encoder instead of SBERT
+subset_n: 50  # Small subset size for multimodal demos
+
+# Paths
+artifacts_root: "./artifacts"
+data_root: "./data"
+
+# ChromaDB Settings
+chroma_root: "./artifacts/chroma"
+
+# Chunking Settings
+chunk_size: 800
+chunk_overlap: 150
+
+# Retrieval Settings
+similarity_top_k: 3
+rerank_top_n: 3
+
+# Advanced Retrieval Settings
+bm25_weight: 0.5  # Weight for sparse retrieval in hybrid search
+dense_weight: 0.5  # Weight for dense retrieval in hybrid search
+

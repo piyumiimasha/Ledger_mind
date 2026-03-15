@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# Artifacts (persisted, but large)
+artifacts/chroma/*/
+artifacts/naive_tfidf/*.npz
+artifacts/naive_tfidf/*.pkl
+artifacts/advanced/finetuned_embeddings/
+
+# Data (large files)
+data/raw_text/*.txt
+data/pdfs/*.pdf
+data/images/*.jpg
+data/images/*.jpeg
+data/images/*.png
+data/*.csv
+
+# Keep structure
+!data/.gitkeep
+!artifacts/.gitkeep
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# Instructor materials (not for students)
+full codes/
+docs/
+
+# Data archives
+data.zip
+*.npz

@@ -1,0 +1,71 @@
+# Core data processing
+pandas>=2.0.0
+numpy>=1.24.0
+pillow>=10.0.0
+matplotlib>=3.7.0
+pyarrow>=14.0.0
+
+# Machine Learning & Embeddings
+scikit-learn>=1.3.0
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
+# Vector Database
+chromadb>=0.4.0
+
+# LangChain Core
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-community>=0.0.20
+
+# LangChain LLM Providers
+langchain-openai>=0.0.5
+langchain-groq>=0.0.1
+langchain-google-genai>=0.0.5
+langchain-cohere>=0.0.3
+
+# LangChain Vector Stores
+langchain-chroma>=0.1.0
+
+# LlamaIndex Core
+llama-index>=0.10.0
+
+# LlamaIndex LLM Providers
+llama-index-llms-openai>=0.1.0
+llama-index-llms-groq>=0.1.0
+llama-index-llms-gemini>=0.1.0
+
+# LlamaIndex Embedding Providers
+llama-index-embeddings-openai>=0.1.0
+llama-index-embeddings-cohere>=0.1.0
+llama-index-embeddings-huggingface>=0.1.0
+
+# LlamaIndex Vector Stores
+llama-index-vector-stores-chroma>=0.1.0
+
+# LLM API Clients
+openai>=1.0.0
+google-generativeai>=0.3.0
+cohere>=4.0.0
+
+# Document Processing
+pypdf>=3.0.0
+
+# Sparse Retrieval
+rank-bm25>=0.2.2
+
+# Environment Management
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# Jupyter
+jupyter>=1.0.0
+ipykernel>=6.25.0
+ipywidgets>=8.0.0
+jupyterlab>=4.0.0
+
+# Additional dependencies for langchain
+langchain-text-splitters>=0.0.1
+
+# Additional for compatibility
+packaging>=23.0
