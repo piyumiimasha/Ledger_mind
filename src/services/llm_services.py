@@ -7,6 +7,33 @@ import os
 from typing import Dict, Any
 
 
+class _SimpleLLMResponse:
+    def __init__(self, content: str):
+        self.content = content
+
+
+class _GroqClientWrapper:
+    """Minimal invoke-compatible wrapper used when LangChain import path fails."""
+
+    def __init__(self, api_key: str, model: str, temperature: float, max_tokens: int, timeout: int):
+        from groq import Groq
+
+        self._client = Groq(api_key=api_key, timeout=timeout)
+        self._model = model
+        self._temperature = temperature
+        self._max_tokens = max_tokens
+
+    def invoke(self, prompt: str):
+        completion = self._client.chat.completions.create(
+            model=self._model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=self._temperature,
+            max_tokens=self._max_tokens,
+        )
+        content = completion.choices[0].message.content or ""
+        return _SimpleLLMResponse(content)
+
+
 # ============================================================================
 # LangChain LLM Factory
 # ============================================================================
@@ -28,13 +55,29 @@ def get_llm(config: Dict[str, Any]):
     
     if provider == "groq":
         model_name = config["llm_model"]
-        from langchain_groq import ChatGroq
-        return ChatGroq(
-            model=model_name,
-            temperature=config["temperature"],
-            max_tokens=config["max_tokens"],
-            timeout=config["request_timeout"],
-        )
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY not found in environment")
+
+        try:
+            from langchain_openai import ChatOpenAI
+
+            return ChatOpenAI(
+                model=model_name,
+                api_key=api_key,
+                base_url="https://api.groq.com/openai/v1",
+                temperature=config["temperature"],
+                max_tokens=config["max_tokens"],
+                timeout=config["request_timeout"],
+            )
+        except (OSError, ImportError):
+            return _GroqClientWrapper(
+                api_key=api_key,
+                model=model_name,
+                temperature=config["temperature"],
+                max_tokens=config["max_tokens"],
+                timeout=config["request_timeout"],
+            )
     else:
         raise ValueError(f"Unknown llm_provider: {provider}")
 
