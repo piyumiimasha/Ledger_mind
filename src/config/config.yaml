@@ -33,15 +33,69 @@ data_root: "./data"
 # ChromaDB Settings
 chroma_root: "./artifacts/chroma"
 
+# Weaviate Settings
+weaviate:
+  mode: "cloud"  # Options: embedded | cloud | docker
+  # Embedded mode settings
+  embedded:
+    persistence_data_path: "./artifacts/weaviate_data"
+    binary_path: "./artifacts/weaviate_binaries"
+  # Cloud mode settings (only used if mode = "cloud")
+  cloud:
+    cluster_url: "https://ovb3qkc3ste6wxq3mwjgxq.c0.asia-southeast1.gcp.weaviate.cloud"
+    api_key: "VnZXRVJRL0hHWlpYRmZQNV9ncXZkQ2NuQkloVTNxSnh3ZWhvdk1jWTJYNG5ZYXhqQkd4ZXo1WEppVkZBPV92MjAw"
+    timeout: 30
+  # Docker mode settings (only used if mode = "docker")
+  docker:
+    host: "localhost"
+    port: 8080
+    grpc_port: 50051
+  # Schema settings
+  schema:
+    class_name: "UberReportChunk"
+    vector_index_config:
+      distance: "cosine"
+      ef_construction: 128
+      ef: 64
+
 # Chunking Settings
 chunk_size: 800
 chunk_overlap: 150
 
-# Retrieval Settings
+# Retrieval Settings (Hybrid Search)
+retrieval:
+  # Dense retrieval
+  dense_top_k: 20
+  dense_weight: 0.6
+
+  # Sparse retrieval (BM25)
+  sparse_top_k: 20
+  sparse_weight: 0.4
+  bm25_b: 0.75      # Length normalization (0.0-1.0)
+  bm25_k1: 1.2      # Term frequency saturation
+
+  # Reranking
+  reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  rerank_top_n: 3   # Final results after reranking
+  rerank_batch_size: 32
+
+# RAG Generation Settings
+rag:
+  context_template: |
+    Use the following context to answer the question. Be concise and factual.
+
+    Context:
+    {context}
+
+    Question: {question}
+
+    Answer:
+  include_sources: true
+  max_context_chunks: 3
+
+# Legacy settings (kept for backwards compatibility)
 similarity_top_k: 3
 rerank_top_n: 3
-
-# Advanced Retrieval Settings
 bm25_weight: 0.5  # Weight for sparse retrieval in hybrid search
 dense_weight: 0.5  # Weight for dense retrieval in hybrid search
 

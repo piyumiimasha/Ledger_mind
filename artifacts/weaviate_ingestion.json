@@ -1,0 +1,13 @@
+{
+  "source": "chunks_jsonl",
+  "source_path": "data\\cleaned\\chunks.jsonl",
+  "destination": "weaviate",
+  "destination_collection": "UberReportChunk",
+  "num_chunks": 464,
+  "num_weaviate_objects": 464,
+  "chunking_strategy": "fixed",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimensions": 384,
+  "ingestion_timestamp": "2026-03-21T17:22:29.165624",
+  "success": true
+}

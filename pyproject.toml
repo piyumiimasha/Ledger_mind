@@ -85,6 +85,8 @@ dependencies = [
     # Compatibility
     "packaging>=23.0",
     "langchain-huggingface>=1.2.1",
+    # Weaviate vector database
+    "weaviate-client>=4.4.0",
 ]
 
 [project.optional-dependencies]
