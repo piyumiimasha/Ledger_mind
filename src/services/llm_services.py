@@ -52,25 +52,24 @@ def get_llm(config: Dict[str, Any]):
         ValueError: If provider is unknown
     """
     provider = config["llm_provider"]
-    
     if provider == "groq":
         model_name = config["llm_model"]
-        api_key = os.getenv("GROQ_API_KEY")
-        if not api_key:
-            raise ValueError("GROQ_API_KEY not found in environment")
-
         try:
-            from langchain_openai import ChatOpenAI
-
-            return ChatOpenAI(
+            from langchain_groq import ChatGroq
+            return ChatGroq(
                 model=model_name,
-                api_key=api_key,
-                base_url="https://api.groq.com/openai/v1",
                 temperature=config["temperature"],
                 max_tokens=config["max_tokens"],
                 timeout=config["request_timeout"],
             )
-        except (OSError, ImportError):
+        except Exception as exc:
+            # Some Windows envs fail while importing optional deep deps through langchain_groq.
+            # Fallback to the native Groq client with an invoke-compatible wrapper.
+            api_key = os.getenv("GROQ_API_KEY")
+            if not api_key:
+                raise RuntimeError(
+                    "GROQ_API_KEY is missing. Add it to your .env before using provider='groq'."
+                ) from exc
             return _GroqClientWrapper(
                 api_key=api_key,
                 model=model_name,
@@ -78,6 +77,16 @@ def get_llm(config: Dict[str, Any]):
                 max_tokens=config["max_tokens"],
                 timeout=config["request_timeout"],
             )
+        
+    elif provider == "gemini":
+        model_name = config["llm_model"]
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        return ChatGoogleGenerativeAI(
+            model=model_name,
+            temperature=config["temperature"],
+            max_output_tokens=config["max_tokens"],
+        )
+    
     else:
         raise ValueError(f"Unknown llm_provider: {provider}")
 
@@ -111,14 +120,23 @@ def get_text_embeddings(config: Dict[str, Any]):
         return CohereEmbeddings(model=model_name)
     
     elif provider == "sbert":
-        from langchain_community.embeddings import HuggingFaceEmbeddings
+        try:
+            from langchain_huggingface import HuggingFaceEmbeddings
+        except OSError as exc:
+            message = str(exc)
+            if "c10.dll" in message or "WinError 1114" in message:
+                raise RuntimeError(
+                    "PyTorch failed to load on Windows (c10.dll / WinError 1114). "
+                    "Reinstall a CPU-only PyTorch build in your active environment and restart the kernel."
+                ) from exc
+            raise
         model_kwargs = {"device": "cpu"} #cuda or mps
-        
+
         if config.get("normalize_embeddings", True):
             encode_kwargs = {"normalize_embeddings": True}
         else:
             encode_kwargs = {}
-        
+
         return HuggingFaceEmbeddings(
             model_name=model_name,
             model_kwargs=model_kwargs,
