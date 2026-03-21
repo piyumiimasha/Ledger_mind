@@ -1,0 +1,11 @@
+{
+  "source_file": "data\\qa_pairs\\uber_report_qa_pairs.jsonl",
+  "train_file": "data\\qa_pairs\\train.jsonl",
+  "test_file": "data\\qa_pairs\\golden_test_set.jsonl",
+  "total_pairs": 3180,
+  "train_pairs": 2544,
+  "test_pairs": 636,
+  "train_ratio": 0.8,
+  "random_seed": 42,
+  "split_at": "2026-03-21T15:41:06.426968"
+}

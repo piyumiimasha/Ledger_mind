@@ -68,3 +68,5 @@ docs/
 # Data archives
 data.zip
 *.npz
+
+uv.lock
