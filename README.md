@@ -38,3 +38,18 @@ User Question
 
 ### FineTune
 
+#### Overall Flow
+1. Load Data (500 Q&A pairs about Uber's annual report)
+           ↓
+2. Load HUGE 7 Billion parameter model (Mistral-7B)
+           ↓
+3. Apply 4-bit Quantization (Shrink model memory)
+           ↓
+4. Apply LoRA adapters (Train only 1.11% of parameters)
+           ↓
+5. Fine-tune for 150 steps
+           ↓
+6. Save trained adapters (80 MB file)
+           ↓
+7. Test inference 
+
