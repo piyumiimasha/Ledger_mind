@@ -43,7 +43,7 @@ weaviate:
   # Cloud mode settings (only used if mode = "cloud")
   cloud:
     cluster_url: "https://ovb3qkc3ste6wxq3mwjgxq.c0.asia-southeast1.gcp.weaviate.cloud"
-    api_key: "VnZXRVJRL0hHWlpYRmZQNV9ncXZkQ2NuQkloVTNxSnh3ZWhvdk1jWTJYNG5ZYXhqQkd4ZXo1WEppVkZBPV92MjAw"
+    api_key: WEAVIATE_API_KEY
     timeout: 30
   # Docker mode settings (only used if mode = "docker")
   docker:

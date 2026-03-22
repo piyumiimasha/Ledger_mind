@@ -87,6 +87,7 @@ dependencies = [
     "langchain-huggingface>=1.2.1",
     # Weaviate vector database
     "weaviate-client>=4.4.0",
+    "rouge-score>=0.1.2",
 ]
 
 [project.optional-dependencies]
